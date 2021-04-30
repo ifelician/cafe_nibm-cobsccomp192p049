@@ -26,11 +26,25 @@ class SignUpViewController: UIViewController {
    
     
     @IBAction func onSignUpPressed(_ sender: UIButton) {
-        if validateInput() {
-            registerUser(email: txtEmail.text!, password: txtPassword.text!)
-        }else{
-            print("Input Errors found")
+        if !InputValidator.isValidName(name: txtName.text ?? ""){
+            Loaf("Invalid name! ", state: .error, sender: self).show()
+            return
         }
+        
+        if !InputValidator.isValidEmail(email: txtName.text ?? ""){
+            Loaf("Invalid email! ", state: .error, sender: self).show()
+            return
+        }
+        if !InputValidator.isValidMobileNo(txtPhone.text ?? ""){
+            Loaf("Invalid Mobile number! ", state: .error, sender: self).show()
+            return
+        }
+        if !InputValidator.isValidPassword(pass: txtPassword.text ?? "", minLength: 6, maxLength: 20){
+            Loaf("Invalid password! ", state: .error, sender: self).show()
+            return
+        }
+        registerUser(email: txtEmail.text!, password: txtPassword.text!)
+        
     }
     
     
@@ -55,43 +69,7 @@ class SignUpViewController: UIViewController {
         }
     }
     
-    func validateInput() -> Bool {
-        guard let name = txtName.text else {
-            print("Name is NULL")
-            return false
-        }
-        guard let email = txtEmail.text else {
-            print("Email is NULL")
-            return false
-        }
-        guard let phone = txtPhone.text else {
-            print("Phone number is NULL")
-            return false
-        }
-        guard let password = txtPassword.text else {
-            print("Password is NULL")
-            return false
-        }
-        
-        if name.count < 5 {
-            print("Enter a valid name")
-            return false
-        }
-        if email.count < 5 {
-            print("Enter a valid email")
-            return false
-        }
-        if phone.count < 10 {
-            print("Enter a valid phone number")
-            return false
-        }
-        if password.count < 5 {
-            print("Enter a valid password")
-            return false
-        }
-        
-        return true
-    }
+  
 
 }
 

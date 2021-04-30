@@ -26,35 +26,21 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func onLoginPress(_ sender: UIButton) {
-        if validateInpu(){
-            Authenticate(email: txtEmail.text!, password: txtPwd.text!)
-        } else {
-            print("Input Error Found.")
+        
+        if !InputValidator.isValidEmail(email: txtEmail.text ?? ""){
+            Loaf("Invalid email! ", state: .error, sender: self).show()
+            return
         }
+        
+        if !InputValidator.isValidPassword(pass: txtPwd.text ?? "", minLength: 6, maxLength: 20){
+            Loaf("Invalid password! ", state: .error, sender: self).show()
+            return
+        }
+        Authenticate(email: txtEmail.text!, password: txtPwd.text!)
+         
     }
     
-    func validateInpu() -> Bool {
-        guard let email = txtEmail.text else {
-            print("Email is null")
-            return false
-        }
-        guard let pwd = txtPwd.text else{
-            print("Password is null")
-            return false
-        }
-        
-        if email.count < 5 {
-            print("Enter valid Email.")
-            return false
-        }
-        
-        if pwd.count < 5 {
-            print("Enter valid Password")
-            return false
-        }
-        
-        return true
-    }
+ 
     
     func Authenticate(email: String, password: String){
         Auth.auth().signIn(withEmail: email, password: password) {
